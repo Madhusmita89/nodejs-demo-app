@@ -1,0 +1,24 @@
+name: Build and Deploy to DockerHub
+on:
+  push:
+    branches: [ main ]
+jobs:
+  build-and-deploy:
+    runs-on: linux-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    - name: Install dependencies and run tests
+      run: |
+        npm install
+        npm test
+    - name: Log in to DockerHub
+      run: echo "${{ secrets.Madhu@1234 }}" | docker login -u "${{ secrets.Dmadhusmita89 }}" --password-stdin
+    - name: Build Docker image
+      run: docker build -t ${{ secrets.madhusmita89 }}/ci-cd-demo .
+    - name: Push Docker image to DockerHub
+      run: docker push ${{ secrets.madhusmita89 }}/ci-cd-demo
