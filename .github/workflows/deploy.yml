@@ -7,7 +7,7 @@ on:
 
 jobs:
   deploy:
-    runs-on: ubuntu-latest
+    runs-on: linux-latest
 
     steps:
     - name: Checkout code
@@ -24,7 +24,7 @@ jobs:
       run: |
         ssh ${{ secrets.ec2-user }}@${{ secrets.65.2.121.44 }} << 'EOF'
           sudo rm -rf app || true
-          git clone https://github.com/Madhusmita89E/nodejs-demo-app.git app
+          git clone https://github.com/Madhusmita89/nodejs-demo-app.git app
           cd app
           docker stop nodeapp || true
           docker rm nodeapp || true
