@@ -1,0 +1,27 @@
+# Update
+sudo yum update -y
+
+# Install Docker
+sudo yum install -y docker
+
+# Start Docker
+sudo systemctl start docker
+sudo systemctl enable docker
+
+# Add current user to docker group
+sudo usermod -aG docker ec2-user
+
+# Reboot for group changes to apply
+sudo reboot
+
+docker login
+# Enter your DockerHub username and password/token
+ 
+Pull Your Image
+docker pull <your-dockerhub-username>/nodejs-demo-app:latest
+
+Run the Docker Container
+
+docker run -d -p 3000:3000 <your-dockerhub-username>/nodejs-demo-app:latest
+
+http://<your-ec2-public-ip>:3000
