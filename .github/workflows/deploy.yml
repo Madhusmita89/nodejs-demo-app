@@ -1,0 +1,33 @@
+name: Deploy to EC2 with Docker
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup SSH
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.cat ~/.ssh/id_rsa }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan ${{ secrets.65.2.121.44 }} >> ~/.ssh/known_hosts
+
+    - name: Deploy Node.js Docker App on EC2
+      run: |
+        ssh ${{ secrets.ec2-user }}@${{ secrets.65.2.121.44 }} << 'EOF'
+          sudo rm -rf app || true
+          git clone https://github.com/Madhusmita89E/nodejs-demo-app.git app
+          cd app
+          docker stop nodeapp || true
+          docker rm nodeapp || true
+          docker build -t nodeapp .
+          docker run -d -p 3000:3000 --name nodeapp nodeapp
+        EOF
